@@ -174,7 +174,9 @@ def fetch_openfoodfacts_product_name(upc: str) -> str | None:
         headers={"User-Agent": OPENFOODFACTS_USER_AGENT},
     )
     with urlopen(request, timeout=20) as response:
+        assert response.getcode() == 200
         payload = json.loads(response.read().decode("utf-8"))
+        assert "status" in payload
 
     if payload.get("status") != 1:
         return None
